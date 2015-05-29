@@ -1,30 +1,15 @@
+module Main where
 
 import Graphics.Gloss
 
-main 
- = display 
-        (InWindow  "Colors" (800, 800) (5, 5))
-        (greyN 0.4)
-        (Pictures 
-                [ Translate 
-                        (200 * cos (2 * pi * (fromIntegral n) / 12))
-                        (200 * sin (2 * pi * (fromIntegral n) / 12))
-                $ Color (withAlpha 0.8 c) $ circleSolid 100
-                        | n <- [0 .. length colors]
-                        | c <- colors ])
-colors
- =      [ red
-        , orange
-        , yellow
-        , chartreuse
-        , green
-        , aquamarine
-        , cyan
-        , azure
-        , blue
-        , mixColors 0.8 0.2 blue magenta -- violet
-        , magenta
-        , rose
-        ]
 
+renderInt :: Int -> Picture
+renderInt = scale 0.2 0.2 . text . show
 
+main :: IO ()
+main = simulate (InWindow "Nice Window" (200, 200) (800, 200))
+                white
+                30
+                [0..]
+                (renderInt . head)
+                (\_ _ -> tail)
