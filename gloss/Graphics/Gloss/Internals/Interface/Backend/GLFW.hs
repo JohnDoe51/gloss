@@ -281,7 +281,7 @@ installKeyMouseCallbackGLFW stateRef callbacks
             Nothing -> return ()
 
 
--- GLFW calls this on a non-character keyboard action.
+-- GLFW calls this on a keyboard action.
 callbackKeyboard 
         :: IORef GLFWState -> [Callback]
         -> GLFW.Key -> Int -> GLFW.KeyState -> GLFW.ModifierKeys
@@ -290,7 +290,7 @@ callbackKeyboard
 callbackKeyboard stateRef callbacks key _ keystate _
  = do   
         let ks = if keystate == GLFW.KeyState'Pressed then True else False
-        (modsSet, GLFWState mods pos _ _ _ _ _)
+        (modsSet, GLFWState mods pos _ _ _ _)
                 <- setModifiers stateRef key ks     
         let key'      = fromGLFW key
         let keystate' = if ks then Down else Up
@@ -342,7 +342,7 @@ callbackMouseButton
         -> IO ()
 
 callbackMouseButton stateRef callbacks key keystate _
- = do   (GLFWState mods pos _ _ _ _ _) <- readIORef stateRef
+ = do   (GLFWState mods pos _ _ _ _) <- readIORef stateRef
         let key'      = fromGLFW key
         let keystate' = if keystate == GLFW.MouseButtonState'Pressed then Down else Up
 
@@ -360,7 +360,7 @@ callbackMouseWheel
 
 callbackMouseWheel stateRef callbacks _ y
  = do   (key, keystate)  <- setMouseWheel stateRef y
-        (GLFWState mods pos _ _ _ _ _) <- readIORef stateRef
+        (GLFWState mods pos _ _ _ _) <- readIORef stateRef
 
         -- Call all the Gloss KeyMouse actions with the new state.
         sequence_ 
